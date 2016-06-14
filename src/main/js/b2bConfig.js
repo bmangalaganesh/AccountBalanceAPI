@@ -15,9 +15,9 @@ var loggers = {
 	};
 
 var config = [
-              {name:"transactions",
+              {name:"acctbalance",
             	  methods:[
-            	           {name:"GET", targetUrl:"http://api-springboot.mybluemix.net/transactions"}
+            	           {name:"GET", targetUrl:"http://api-springboot.mybluemix.net/acctbalance"}
             	           ]
               }                            
              ];

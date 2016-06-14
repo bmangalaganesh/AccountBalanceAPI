@@ -10,17 +10,17 @@ info:
 host: $(catalog.host)
 basePath: '/${project.artifactId}/${api.version}'
 paths:
-  /transactions:
+  /balance:
     get:
       responses:
         '200':
           description: 200 OK
     parameters:
-      - name: accountNo
+      - name: custId
         type: string
         required: true
         in: query
-        description: Account Number
+        description: Customer ID
 securityDefinitions:
   clientID:
     description: ''
@@ -37,11 +37,11 @@ x-ibm-configuration:
           case:
             - operations:
                 - verb: get
-                  path: /transactions
+                  path: /balance
               execute:
                 - gatewayscript:
-                    title: transactions
-                    source: "apim.setvariable('operation','transactions');"
+                    title: acctbalance
+                    source: "apim.setvariable('operation','acctbalance');"
       - gatewayscript:
           title: Log Request
           source: >-
@@ -50,6 +50,12 @@ x-ibm-configuration:
             var apiConfig
             = util.loadApiConfig('${api.framework.dir}/','${api.config.dir}/',apim.getvariable('env.path'),'${project.artifactId}}','${api.version}',
             console);
+
+
+
+
+
+
 
 
 
@@ -69,11 +75,23 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             // get the operation and method being executed
 
             var operation = apim.getvariable('operation');
 
             var method  = apim.getvariable('request.verb');
+
+
+
+
+
+
 
 
 
@@ -83,9 +101,21 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             var preTransformMethod = operation + 'PreTransform';
 
             apim.setvariable('preTransformMethod', preTransformMethod);
+
+
+
+
+
+
 
 
 
@@ -105,9 +135,21 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             var body = apim.getvariable('message.body');
 
             apiConfig.logPayload(apim, 'Input');
+
+
+
+
+
+
 
 
 
@@ -120,13 +162,19 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             apim.output('application/json');
       - operation-switch:
           title: Invoke URL switch
           case:
             - operations:
                 - verb: get
-                  path: /transactions
+                  path: /balance
               execute:
                 - invoke:
                     title: invoke
@@ -149,9 +197,21 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             var body = apim.getvariable('message.body');
 
             apiConfig.logPayload(apim, 'InvokeResponse');
+
+
+
+
+
+
 
 
 
@@ -173,9 +233,16 @@ x-ibm-configuration:
 
 
 
+
+
+
+
+
+
             // log response headers and Audit Data
 
             apiConfig.logAuditData(apim, 'Output');
+    catch: []
   catalogs:
     catalog-name-1:
       properties:
